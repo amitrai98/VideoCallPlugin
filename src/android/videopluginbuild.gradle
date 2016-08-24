@@ -1,0 +1,33 @@
+ext.cdvMinSdkVersion = 21
+
+repositories{
+    jcenter()
+    flatDir{
+      dirs 'libs'
+   }
+    
+}
+
+//dependencies {
+//	compile(name:'opentok-android-sdk-2.7.0.jar', ext:'jar')
+    
+//}
+
+
+dependencies {
+    compile fileTree(include: '*.jar', dir: 'libs')
+    // SUB-PROJECT DEPENDENCIES START
+    compile 'com.android.support:support-v13:23+'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    //    compile 'com.google.android.gms:play-services-gcm:+'
+     compile files('libs/opentok-android-sdk-2.7.0.jar')
+    compile 'com.squareup.picasso:picasso:2.3.2'
+    compile 'com.android.support:cardview-v7:23.2.1'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.github.akinaru:speedtest:1.11'
+    
+}
+
+android {
+    
+}

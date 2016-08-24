@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@color/semi_transparent"
+        android:animateLayoutChanges="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/layout_close_add_credit"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+            <ImageView
+                android:layout_centerInParent="true"
+                android:src="@drawable/close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+
+
+
+        <RelativeLayout
+            android:animateLayoutChanges="true"
+            android:layout_below="@+id/layout_close_add_credit"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:visibility="invisible"
+                android:id="@+id/layout_progress"
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ProgressBar
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:textColor="@color/white"
+                    android:text="@string/wait_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_credit_btns"
+                android:layout_marginBottom="10dp"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_creditbal"
+                    android:textSize="16dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+
+
+                <View
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/view_devider"
+                    android:layout_below="@+id/txt_creditbal"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white"/>
+                <Button
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/btn_buy_ten"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/white"
+                    android:text="@string/buy_ten_credit"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/addcreditbtn"
+                    android:layout_height="match_parent"/>
+
+                <Button
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/btn_buy_twetnty"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/white"
+                    android:text="@string/buy_twenty_credit"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/addcreditbtn"
+                    android:layout_height="match_parent"/>
+
+                <Button
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/btn_buy_fourty"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/white"
+                    android:text="@string/buy_fourty_credit"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/addcreditbtn"
+                    android:layout_height="match_parent"/>
+
+                <Button
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/btn_buy_sixty"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/white"
+                    android:text="@string/buy_sixty_credit"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/addcreditbtn"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

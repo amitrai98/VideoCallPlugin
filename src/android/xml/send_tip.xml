@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:animateLayoutChanges="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@drawable/rectangle"
+        android:animateLayoutChanges="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/layout_close"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+            <ImageView
+                android:layout_centerInParent="true"
+                android:src="@drawable/close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:visibility="invisible"
+            android:id="@+id/layout_progress_tip"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ProgressBar
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textColor="@color/white"
+                android:text="@string/wait_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_others"
+            android:animateLayoutChanges="true"
+            android:layout_below="@+id/layout_close"
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+
+                android:id="@+id/txt_creditbal"
+                android:textSize="18dp"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <LinearLayout
+                android:id="@+id/layout_add_credit"
+                android:orientation="vertical"
+                android:layout_below="@+id/txt_creditbal"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp">
+
+                <LinearLayout
+                    android:id="@+id/layout_addmore"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:padding="5dp"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:id="@+id/img_add"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/txt_addmore"
+                        android:src="@drawable/add"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"/>
+
+                    <TextView
+                        android:id="@+id/txt_addmore"
+                        android:padding="3dp"
+                        android:text="ADD MORE"
+                        android:layout_marginLeft="7dp"
+                        android:textColor="@color/white"
+                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_below="@+id/layout_add_credit"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/custom_tip"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <EditText
+                        android:background="@drawable/send_tip_bg"
+                        android:id="@+id/edt_tipamount"
+                        android:layout_weight=".3"
+                        android:layout_width="0dp"
+                        android:padding="2dp"
+                        android:inputType="number"
+                        android:maxLength="5"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="5dp"
+                        android:imeOptions="actionDone"
+                        android:layout_height="match_parent"/>
+
+                    <Button
+                        android:id="@+id/btn_sendtip"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/white"
+                        android:layout_weight=".5"
+                        android:text="@string/send_tip"
+                        android:layout_width="0dp"
+                        android:background="@color/credit_added"
+                        android:layout_height="match_parent"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/quick_tip"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <Button
+                        android:id="@+id/btn_ten_dollar"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight=".3"
+                        android:text="@string/tip_ten"
+                        android:layout_width="0dp"
+                        android:background="@color/credit_added"
+                        android:layout_height="match_parent"/>
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_weight=".1"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"/>
+
+                    <Button
+                        android:id="@+id/btn_twenty_dollar"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight=".3"
+                        android:text="@string/tip_twenty"
+                        android:layout_width="0dp"
+                        android:background="@color/credit_added"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <Button
+                        android:id="@+id/btn_fourty_dollar"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight=".3"
+                        android:text="@string/tip_fourty"
+                        android:layout_width="0dp"
+                        android:background="@color/credit_added"
+                        android:layout_height="match_parent"/>
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_weight=".1"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"/>
+
+                    <Button
+                        android:id="@+id/btn_sixty_dollar"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight=".3"
+                        android:text="@string/tip_sixty"
+                        android:layout_width="0dp"
+                        android:background="@color/credit_added"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_lowbal"
+                android:visibility="invisible"
+                android:layout_alignParentBottom="true"
+                android:text="@string/you_must"
+                android:textSize="12sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="20dp"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:background="@drawable/low_credit_bg"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

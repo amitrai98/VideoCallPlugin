@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        id="com.evontech.videoplugin"
+        version="0.7.0">
+
+  <name>VideoPlugin</name>
+
+  <engines>
+    <engine name="cordova" version=">=3.4.0"/>
+  </engines>
+
+  <asset src="www/VideoPlugin.js" target="js/VideoPlugin.js"/>
+
+  <js-module src="www/VideoPlugin.js" name="VideoPlugin">
+    <clobbers target="VideoPlugin" />
+  </js-module>
+
+  <platform name="ios">
+    
+    <config-file target="config.xml" parent="/widget">
+      <feature name="VideoPlugin">
+        <param name="ios-package" value="VideoPlugin" />
+      </feature>
+    </config-file>
+
+    <header-file src="src/ios/VideoPlugin.h" target-dir="VideoPlugin"/>
+    <source-file src="src/ios/VideoPlugin.m" target-dir="VideoPlugin"/>
+    <header-file src="src/ios/JWGCircleCounter.h" target-dir="VideoPlugin"/>
+    <source-file src="src/ios/JWGCircleCounter.m" target-dir="VideoPlugin"/>
+    <header-file src="src/ios/Reachability.h" target-dir="VideoPlugin"/>
+    <source-file src="src/ios/Reachability.m" target-dir="VideoPlugin"/>
+    <header-file src="src/ios/VideoCallHelper.h" target-dir="VideoPlugin"/>
+    <source-file src="src/ios/VideoCallHelper.m" target-dir="VideoPlugin"/>
+    <header-file src="src/ios/CallingView.h" target-dir="VideoPlugin"/>
+    <source-file src="src/ios/CallingView.m" target-dir="VideoPlugin"/>
+    <header-file src="src/ios/UserTipView.h" target-dir="VideoPlugin"/>
+    <source-file src="src/ios/UserTipView.m" target-dir="VideoPlugin"/>
+    <header-file src="src/ios/UserCreditTableViewCell.h" target-dir="VideoPlugin"/>
+    <source-file src="src/ios/UserCreditTableViewCell.m" target-dir="VideoPlugin"/>
+    <header-file src="src/ios/NetworkDownloadBandwidthClass.h" target-dir="VideoPlugin"/>
+    <source-file src="src/ios/NetworkDownloadBandwidthClass.m" target-dir="VideoPlugin"/>
+    <header-file src="src/ios/VideoCallingDataModel.h" target-dir="VideoPlugin"/>
+    <source-file src="src/ios/VideoCallingDataModel.m" target-dir="VideoPlugin"/>
+    <header-file src="src/ios/Constants.h" target-dir="VideoPlugin"/>
+    <resource-file src="src/ios/CallingView.xib" target-dir="VideoPlugin"/>
+    <resource-file src="src/ios/UserTipView.xib" target-dir="VideoPlugin"/>
+    <resource-file src="src/ios/UserCreditTableViewCell.xib" target-dir="VideoPlugin"/>
+  </platform>
+  
+  <platform name="android">
+      
+      <config-file target="res/xml/config.xml" parent="/*">
+          <feature name="VideoPlugin">
+              <param name="android-package" value="com.evontech.VideoPlugin.VideoPlugin"/>
+          </feature>
+      </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+        <uses-permission android:name="android.permission.INTERNET"/>
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+        <uses-permission android:name="android.permission.CAMERA" />
+        <uses-permission android:name="android.permission.WAKE_LOCK"/>
+        <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+        <uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT"/>
+    </config-file>
+      
+      <source-file src="src/android/java/ActivityListener.java" target-dir="src/com/evontech/VideoPlugin"/>
+      <source-file src="src/android/java/CallBean.java" target-dir="src/com/evontech/VideoPlugin"/>
+      <source-file src="src/android/java/Chrono.java" target-dir="src/com/evontech/VideoPlugin"/>
+      <source-file src="src/android/java/Constants.java" target-dir="src/com/evontech/VideoPlugin"/>
+      <source-file src="src/android/java/MySession.java" target-dir="src/com/evontech/VideoPlugin"/>
+      <source-file src="src/android/java/MySubscriber.java" target-dir="src/com/evontech/VideoPlugin"/>
+      <source-file src="src/android/java/SessionListeners.java" target-dir="src/com/evontech/VideoPlugin"/>
+      <source-file src="src/android/java/SpeedTestListener.java" target-dir="src/com/evontech/VideoPlugin"/>
+      <source-file src="src/android/java/VideoPlugin.java" target-dir="src/com/evontech/VideoPlugin"/>
+      
+      <!-- copy opentok sdk -->
+      <source-file src="src/android/libs/opentok-android-sdk-2.7.0.jar" target-dir="libs" />
+      <source-file src="src/android/libs/armeabi/libopentok.so" target-dir="libs/armeabi" />
+      <source-file src="src/android/libs/armeabi-v7a/libopentok.so" target-dir="libs/armeabi-v7a" />
+      <source-file src="src/android/libs/x86/libopentok.so" target-dir="libs/x86" />
+     
+      <!--  adding xml  -->
+      <source-file src="src/android/xml/buy_credit.xml" target-dir="res/layout"/>
+      <source-file src="src/android/xml/credit_added.xml" target-dir="res/layout"/>
+      <source-file src="src/android/xml/low_credit_warning.xml" target-dir="res/layout"/>
+      <source-file src="src/android/xml/room.xml" target-dir="res/layout"/>
+      <source-file src="src/android/xml/send_tip.xml" target-dir="res/layout"/>
+      <source-file src="src/android/xml/tip_sent_receive.xml" target-dir="res/layout"/>
+      <source-file src="src/android/xml/view_connecting.xml" target-dir="res/layout"/>
+      <source-file src="src/android/xml/view_none_video.xml" target-dir="res/layout"/>
+      
+      <!-- adding drawables -->
+      <source-file src="src/android/drawables/add.png" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/addcreditbtn.xml" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/alert.png" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/call.png" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/camera.png" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/camera_no.png" target-dir="res/drawable-xhdpi"/>
+      <source-file src="src/android/drawables/close.png" target-dir="res/drawable-xhdpi"/>
+      <source-file src="src/android/drawables/credit.png" target-dir="res/drawable-xhdpi"/>
+      <source-file src="src/android/drawables/low_credit_bg.xml" target-dir="res/drawable-xhdpi"/>
+      <source-file src="src/android/drawables/mic.png" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/mic_no.png" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/rectangle.xml" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/refresh.png" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/round_rectangle_transparent.xml" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/send_tip_bg.xml" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/tip.png" target-dir="res/drawable-xhdpi" />
+      <source-file src="src/android/drawables/tip_sent.png" target-dir="res/drawable-xhdpi" />
+
+
+      <config-file target="res/values/color.xml" parent="/resources">
+          <color name="connecting_dialog">#313131</color>
+          <color name="white">#ffffff</color>
+          <color name="credit_added">#4e9f2e</color>
+          <color name="semi_transparent">#99000000</color>
+          <color name="black">#000000</color>
+          <color name="add_credit">#0062e6</color>
+          <color name="header">#542A63</color>
+          <color name="golden">#F0AF32</color>
+          <color name="insuficinet_bal_bg">#FD4C4C</color>
+      </config-file>
+      
+
+      <config-file target="res/values/strings.xml" parent="/resources">
+          <string name="app_name">Ringhop</string>
+          <string name="launcher_name">@string/app_name</string>
+          <string name="activity_name">@string/launcher_name</string>
+          <string name="low_credit_warninig">LOW CREDIT WARNING...</string>
+          <string name="tip_sent">tips sent</string>
+          <string name="tip_received">tips received</string>
+          <string name="send_tip">SEND TIP</string>
+          <string name="custom_tip">CUSTOM TIP</string>
+          <string name="quick_tip">QUICK TIP</string>
+          <string name="tip_ten">TIP $10</string>
+          <string name="tip_twenty">TIP $20</string>
+          <string name="tip_fourty">TIP $40</string>
+          <string name="tip_sixty">TIP $60</string>
+          <string name="you_must">You must first add additional credits</string>
+          <string name="buy_ten_credit">Buy 10 credits for $10</string>
+          <string name="buy_twenty_credit">Buy 20 credits for $20</string>
+          <string name="buy_fourty_credit">Buy 40 credits for $40</string>
+          <string name="buy_sixty_credit">Buy 60 credits for $60</string>
+          <string name="wait_message">Please Wait</string>
+          <string name="credits">CREDITS</string>
+          <string name="tip_received_value">%1$s tips received</string>
+          <string name="tip_sent_value">%1$s tips sent</string>
+          <string name="call_connect_price">Once connected this video chat \n will be billed at %1$s$ per min.</string>
+          <string name="credit_add_failure_message">An error occurred while adding credit, please try again</string>
+          <string name="tip_send_failure_message">An error occurred while sending tip, please try again</string>
+          <string name="connecting">Connecting...</string>
+          <string name="receiverview">Receiver View</string>
+      </config-file>
+
+
+      <framework src="src/android/videopluginbuild.gradle" custom="true" type="gradleReference"/>
+  </platform>
+
+
+</plugin>

@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
@@ -182,7 +183,7 @@ public class VideoPlugin extends CordovaPlugin implements SessionListeners, Acti
             // done check the credit of tip send success and remove the dialogs
             // done "status - credit or tip " "response type- success or error", "error message in case of failure or updated amount in case of success"
             // done close the status or credit dialog after reading response
-            // todo in case of 0 amount, remove low balance dialog if i am pro
+            // done in case of 0 amount, remove low balance dialog if i am pro
             if(action.equalsIgnoreCase(ACTION_APIRESPONSE)){
 
                 cordova.getActivity().runOnUiThread(new Runnable() {
@@ -620,7 +621,7 @@ public class VideoPlugin extends CordovaPlugin implements SessionListeners, Acti
     public void onError(OpentokError error) {
         if(error != null){
             JSONObject json = getJson(error.toString(), ERROR);
-            mCallBackContext.successMessage(json);
+            mCallBackContext.error(json);
         }
     }
 
@@ -657,6 +658,18 @@ public class VideoPlugin extends CordovaPlugin implements SessionListeners, Acti
     public void onReceiverInitialized() {
         JSONObject json = getJson(Constants.RECEIVER_INITIALIZED, SUCCESS);
         mCallBackContext.successMessage(json);
+    }
+
+    /**
+     * if anything goes wrong
+     * @param error reason for the error
+     */
+    @Override
+    public void onPluginError(String error){
+        if(error != null){
+            JSONObject json = getJson(error.toString(), ERROR);
+            mCallBackContext.error(json);
+        }
     }
 
 
@@ -1081,7 +1094,8 @@ public class VideoPlugin extends CordovaPlugin implements SessionListeners, Acti
                 return jsonResponse;
 
             }else if(message_type.equals(ERROR)){
-                jsonResponse = new JSONObject("{\"data\":\"{\\\"networkType\\\":\\\"unknown\\\",\\\"error\\\":\\\"+message+\\\"}\",\"status\":\"failure\"}");
+                String network_type = getNetworkInfo();
+                jsonResponse = new JSONObject("{\"data\":\"{\\\"networkType\\\":"+network_type+",\\\"error\\\":"+message+"}\",\"status\":\"failure\"}");
                 return jsonResponse;
             }
         }catch (Exception e){
@@ -1167,9 +1181,6 @@ public class VideoPlugin extends CordovaPlugin implements SessionListeners, Acti
             callBean = gson.fromJson(args.get(0).toString(), CallBean.class);
             Log.e(TAG, ""+callBean);
 //            initCall(callBean);
-
-
-
             if (ACTION_INIT_CALL.equals(action)) {
                 mCallBackContext = callbackContext;
                 ((MainActivity) cordova.getActivity()).setActivityListener(this);
@@ -1771,6 +1782,28 @@ public class VideoPlugin extends CordovaPlugin implements SessionListeners, Acti
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * checks conneciton type
+     */
+    private String getNetworkInfo(){
+        String networkType= "unknown";
+        try {
+
+            NetworkInfo type = Connectivity.getNetworkInfo(cordova.getActivity());
+            Log.e(TAG, ""+type);
+            if(!type.getTypeName().equalsIgnoreCase("WIFI")){
+                networkType = Connectivity.getNetworkClass(cordova.getActivity());
+            }else
+                networkType = "wifi";
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return networkType;
     }
 
 }

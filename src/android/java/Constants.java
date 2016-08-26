@@ -23,11 +23,6 @@ public class Constants {
 
 
     /**
-     * socket timeout used in ms.
-     */
-    public final static int SOCKET_TIMEOUT = 5000;
-
-    /**
      * speed examples server host name.
      */
     public final static String SPEED_TEST_SERVER_HOST = "speedtestdlhi1.rcom.co.in";//"2.testdebit.info";
@@ -54,6 +49,9 @@ public class Constants {
 
 
 
-
+    public static String ERROR_OCCURED = "an error occured";
+    public static String ERROR_ON_CONNECT = "error while connecting";
+    public static String ERROR_ON_SESSION_CONNECT = "error on session connect";
+    public static String ERROR_STREAM_DROPED = "stream dropped";
 
 }

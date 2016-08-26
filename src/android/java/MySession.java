@@ -38,13 +38,10 @@ public class MySession extends Session {
     private Publisher mPublisher;
     private View mPublisherView;
     private View mSubscriberView;
-    private View mNullView;
 
 
     public static boolean CALL_CONNECTED = false;
     public static boolean CALL_STARTED= false;
-    public static boolean CALL_ENDED = false;
-    public static boolean CALL_REJECTED = false;
     private boolean mCaller = false;
 
     private int CALL_QUALITY = Constants.LOW;
@@ -75,36 +72,41 @@ public class MySession extends Session {
     // callbacks
     @Override
     protected void onConnected() {
-
-        CALL_CONNECTED = true;
-        if (CALL_QUALITY == Constants.LOW){
-            mPublisher = new Publisher(mContext,
-                    "MyPublisher",
-                    Publisher.CameraCaptureResolution.LOW,
-                    Publisher.CameraCaptureFrameRate.FPS_7);
-        }else if(CALL_QUALITY == Constants.MEDIUM){
-            mPublisher = new Publisher(mContext,
-                    "MyPublisher",
-                    Publisher.CameraCaptureResolution.MEDIUM,
-                    Publisher.CameraCaptureFrameRate.FPS_15);
-        }else if(CALL_QUALITY == Constants.HIGH){
-            mPublisher = new Publisher(mContext,
-                    "MyPublisher",
-                    Publisher.CameraCaptureResolution.HIGH,
-                    Publisher.CameraCaptureFrameRate.FPS_15);
-        }else {
-            mPublisher = new Publisher(mContext,
-                    "MyPublisher",
-                    Publisher.CameraCaptureResolution.LOW,
-                    Publisher.CameraCaptureFrameRate.FPS_7);
+        try {
+            CALL_CONNECTED = true;
+            if (CALL_QUALITY == Constants.LOW){
+                mPublisher = new Publisher(mContext,
+                        "MyPublisher",
+                        Publisher.CameraCaptureResolution.LOW,
+                        Publisher.CameraCaptureFrameRate.FPS_7);
+            }else if(CALL_QUALITY == Constants.MEDIUM){
+                mPublisher = new Publisher(mContext,
+                        "MyPublisher",
+                        Publisher.CameraCaptureResolution.MEDIUM,
+                        Publisher.CameraCaptureFrameRate.FPS_15);
+            }else if(CALL_QUALITY == Constants.HIGH){
+                mPublisher = new Publisher(mContext,
+                        "MyPublisher",
+                        Publisher.CameraCaptureResolution.HIGH,
+                        Publisher.CameraCaptureFrameRate.FPS_15);
+            }else {
+                mPublisher = new Publisher(mContext,
+                        "MyPublisher",
+                        Publisher.CameraCaptureResolution.LOW,
+                        Publisher.CameraCaptureFrameRate.FPS_7);
+            }
+            publish(mPublisher);
+            // Add video preview
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            mPublisherView = mPublisher.getView();
+            mPreview.addView(mPublisher.getView(), lp);
+            mPublisher.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
+        }catch (Exception e){
+            e.printStackTrace();
+            mSessionListener.onPluginError(Constants.ERROR_ON_CONNECT);
         }
-        publish(mPublisher);
-        // Add video preview
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        mPublisherView = mPublisher.getView();
-        mPreview.addView(mPublisher.getView(), lp);
-        mPublisher.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
+
 //        }
 
 //        presentText("Welcome to OpenTok Chat.");
@@ -114,39 +116,51 @@ public class MySession extends Session {
     @Override
     protected void onStreamReceived(Stream stream) {
 
-        CALL_STARTED = true;
+        try {
+            CALL_STARTED = true;
 
-        mSessionListener.onCallConnected();
+            mSessionListener.onCallConnected();
 
-        mSessionListener.onCallStarted();
+            mSessionListener.onCallStarted();
 
-        MySubscriber p = new MySubscriber(mContext, stream);
-        // we can use connection data to obtain each user id
-        p.setUserId(stream.getConnection().getData());
-        p.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
+            MySubscriber p = new MySubscriber(mContext, stream);
+            // we can use connection data to obtain each user id
+            p.setUserId(stream.getConnection().getData());
+            p.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
 
-        // Subscribe to this player
-        this.subscribe(p);
-        mSubscriber = p;
-        mSubscriberStream.put(stream, p);
-        mSubscriberConnection.put(stream.getConnection().getConnectionId(), p);
+            // Subscribe to this player
+            this.subscribe(p);
+            mSubscriber = p;
+            mSubscriberStream.put(stream, p);
+            mSubscriberConnection.put(stream.getConnection().getConnectionId(), p);
 
-        mSubscriberView = p.getView();
-        mSubscribersViewContainer.addView(mSubscriberView);
+            mSubscriberView = p.getView();
+            mSubscribersViewContainer.addView(mSubscriberView);
+        }catch (Exception e){
+            e.printStackTrace();
+            mSessionListener.onPluginError(Constants.ERROR_ON_SESSION_CONNECT);
+        }
+
 
     }
 
     @Override
     protected void onStreamDropped(Stream stream) {
 
-        if(CALL_STARTED)
-            mSessionListener.onCallEnded();
-        else
-            mSessionListener.onCallRejected();
+        try {
+            if(CALL_STARTED)
+                mSessionListener.onCallEnded();
+            else
+                mSessionListener.onCallRejected();
 
-        mSubscriberStream.remove(stream);
-        mSubscriberConnection.remove(stream.getConnection().getConnectionId());
-        mSessionListener.onStreamDrop(stream);
+            mSubscriberStream.remove(stream);
+            mSubscriberConnection.remove(stream.getConnection().getConnectionId());
+            mSessionListener.onStreamDrop(stream);
+        }catch (Exception e){
+            e.printStackTrace();
+            mSessionListener.onPluginError(Constants.ERROR_STREAM_DROPED);
+        }
+
     }
 
     @Override
@@ -156,53 +170,70 @@ public class MySession extends Session {
     }
 
     public void hideVideo() {
-        mPublisher.setPublishVideo(!mPublisher.getPublishVideo());
-        if (mPublisher.getPublishVideo()) {
-            mPublisherView.setVisibility(View.VISIBLE);
-        } else {
-            mPublisherView.setVisibility(View.INVISIBLE);
+        try {
+            mPublisher.setPublishVideo(!mPublisher.getPublishVideo());
+            if (mPublisher.getPublishVideo()) {
+                mPublisherView.setVisibility(View.VISIBLE);
+            } else {
+                mPublisherView.setVisibility(View.INVISIBLE);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            mSessionListener.onPluginError(Constants.ERROR_OCCURED);
         }
+
     }
 
     public void muteMic() {
-        if (mPublisher != null) {
-            mPublisher.setPublishAudio(!mPublisher.getPublishAudio());
+        try {
+            if (mPublisher != null) {
+                mPublisher.setPublishAudio(!mPublisher.getPublishAudio());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            mSessionListener.onPluginError(Constants.ERROR_OCCURED);
         }
+
     }
 
     @Override
     protected void onStreamHasVideoChanged(Stream stream, int hasVideo) {
         super.onStreamHasVideoChanged(stream, hasVideo);
-
-        if (mPublisher.getStream().toString().equalsIgnoreCase(stream.toString())) {
-        } else {
-            if (hasVideo == 0) {
-                mSubscriber.setSubscribeToVideo(false);
-                mSubscribersViewContainer.removeView(mSubscriberView);
-                mPreview.removeView(mPublisherView);
-                mSubscribersViewContainer.addView(mPublisherView);
+        try {
+            if (mPublisher.getStream().toString().equalsIgnoreCase(stream.toString())) {
             } else {
-                mSubscriber.setSubscribeToVideo(true);
-                if (mSubscribersViewContainer.getChildAt(mSubscribersViewContainer.getChildCount() - 1).equals(mPublisherView)) {
-                    mSubscribersViewContainer.removeView(mPublisherView);
+                if (hasVideo == 0) {
+                    mSubscriber.setSubscribeToVideo(false);
+                    mSubscribersViewContainer.removeView(mSubscriberView);
+                    mPreview.removeView(mPublisherView);
+                    mSubscribersViewContainer.addView(mPublisherView);
+                } else {
+                    mSubscriber.setSubscribeToVideo(true);
+                    if (mSubscribersViewContainer.getChildAt(mSubscribersViewContainer.getChildCount() - 1).equals(mPublisherView)) {
+                        mSubscribersViewContainer.removeView(mPublisherView);
+                    }
+                    mPreview.addView(mPublisherView);
+                    mSubscribersViewContainer.addView(mSubscriberView);
                 }
-                mPreview.addView(mPublisherView);
-                mSubscribersViewContainer.addView(mSubscriberView);
             }
-        }
-        if(mSubscriber!=null) {
-            if (mSubscriber.getSubscribeToVideo() || mPublisher.getPublishVideo()) {
-                mSessionListener.onVideoViewChange(true);
-            } else {
-                mSessionListener.onVideoViewChange(false);
+            if(mSubscriber!=null) {
+                if (mSubscriber.getSubscribeToVideo() || mPublisher.getPublishVideo()) {
+                    mSessionListener.onVideoViewChange(true);
+                } else {
+                    mSessionListener.onVideoViewChange(false);
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
+            mSessionListener.onPluginError(Constants.ERROR_OCCURED);
         }
+
     }
 
     /**
      * check that mic is muted or not
      *
-     * @return
+     * @return if mic is mute or not
      */
     public boolean isMicMuted() {
         return !mPublisher.getPublishAudio();
@@ -225,6 +256,7 @@ public class MySession extends Session {
             mPublisher.swapCamera();
         }catch (Exception e ){
             e.printStackTrace();
+            mSessionListener.onPluginError(Constants.ERROR_OCCURED);
         }
     }
 

@@ -21,5 +21,6 @@ public interface SessionListeners {
     void onCallEndBeforeConnect();
     void onCallEndByReceiver();
     void onError(OpentokError error);
+    void onPluginError(String error_message);
 
 }

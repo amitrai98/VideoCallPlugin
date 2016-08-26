@@ -64,12 +64,15 @@
         <uses-permission android:name="android.permission.WAKE_LOCK"/>
         <uses-permission android:name="android.permission.RECORD_AUDIO"/>
         <uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT"/>
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     </config-file>
       
       <source-file src="src/android/java/ActivityListener.java" target-dir="src/com/evontech/VideoPlugin"/>
       <source-file src="src/android/java/CallBean.java" target-dir="src/com/evontech/VideoPlugin"/>
       <source-file src="src/android/java/Chrono.java" target-dir="src/com/evontech/VideoPlugin"/>
       <source-file src="src/android/java/Constants.java" target-dir="src/com/evontech/VideoPlugin"/>
+      <source-file src="src/android/java/Connectivity.java" target-dir="src/com/evontech/VideoPlugin"/>
       <source-file src="src/android/java/MySession.java" target-dir="src/com/evontech/VideoPlugin"/>
       <source-file src="src/android/java/MySubscriber.java" target-dir="src/com/evontech/VideoPlugin"/>
       <source-file src="src/android/java/SessionListeners.java" target-dir="src/com/evontech/VideoPlugin"/>

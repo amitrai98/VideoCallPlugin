@@ -4,7 +4,7 @@
     android:keepScreenOn="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:background="@color/bg_color">
 
     <RelativeLayout
         android:padding="5dp"
@@ -52,6 +52,7 @@
 
 
     <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layout_username">
@@ -62,8 +63,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
-            android:layout_centerInParent="true"
-            android:background="@android:color/white">
+            android:layout_centerInParent="true">
 
             <!--<android.support.v4.view.PagerTitleStrip-->
             <!--android:layout_width="wrap_content"-->
@@ -73,6 +73,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:background="@color/bg_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

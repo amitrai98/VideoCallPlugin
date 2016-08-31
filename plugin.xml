@@ -116,6 +116,9 @@
 
       <source-file src="src/android/values/style.xml" target-dir="res/values" />
 
+      <source-file src="src/android/tones/Attack_MetalBlip01.mp3" target-dir="assets" />
+      <source-file src="src/android/tones/alert_asterisk_13.mp3" target-dir="assets" />
+
 
       <config-file target="res/values/color.xml" parent="/resources">
           <color name="connecting_dialog">#313131</color>
@@ -131,7 +134,6 @@
       
 
       <config-file target="res/values/strings.xml" parent="/resources">
-          <string name="app_name">Ringhop</string>
           <string name="launcher_name">@string/app_name</string>
           <string name="activity_name">@string/launcher_name</string>
           <string name="low_credit_warninig">LOW CREDIT WARNING...</string>
@@ -159,8 +161,6 @@
           <string name="connecting">Connecting...</string>
           <string name="receiverview">Receiver View</string>
       </config-file>
-
-
 
 
       <framework src="src/android/videopluginbuild.gradle" custom="true" type="gradleReference"/>

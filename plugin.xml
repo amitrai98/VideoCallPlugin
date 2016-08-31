@@ -114,6 +114,8 @@
       <source-file src="src/android/drawables/tip.png" target-dir="res/drawable-xhdpi" />
       <source-file src="src/android/drawables/tip_sent.png" target-dir="res/drawable-xhdpi" />
 
+      <source-file src="src/android/values/style.xml" target-dir="res/values" />
+
 
       <config-file target="res/values/color.xml" parent="/resources">
           <color name="connecting_dialog">#313131</color>
@@ -157,6 +159,8 @@
           <string name="connecting">Connecting...</string>
           <string name="receiverview">Receiver View</string>
       </config-file>
+
+
 
 
       <framework src="src/android/videopluginbuild.gradle" custom="true" type="gradleReference"/>

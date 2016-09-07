@@ -160,6 +160,7 @@
           <string name="tip_send_failure_message">An error occurred while sending tip, please try again</string>
           <string name="connecting">Connecting...</string>
           <string name="receiverview">Receiver View</string>
+          <string name="please_add_greater_value">Please add amount greater than zero.</string>
       </config-file>
 
 

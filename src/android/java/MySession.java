@@ -1,6 +1,7 @@
 package com.evontech.VideoPlugin;
 
 import android.content.Context;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.opentok.android.Publisher;
 import com.opentok.android.Session;
 import com.opentok.android.Stream;
 import com.opentok.android.Subscriber;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -28,7 +31,7 @@ public class MySession extends Session {
 
     // Interface
     private ViewGroup mSubscribersViewContainer;
-    private ViewGroup mPreview;
+    private RelativeLayout mPreview;
 
     // Players Status
     private MySubscriber mSubscriber;
@@ -41,12 +44,16 @@ public class MySession extends Session {
 
 
     public static boolean CALL_CONNECTED = false;
-    public static boolean CALL_STARTED= false;
+    public static boolean CALL_STARTED = false;
     private boolean mCaller = false;
 
     private int CALL_QUALITY = Constants.LOW;
 
+    private boolean audio_call_init = false;
+
     private final String TAG = getClass().getSimpleName();
+    private static final String TIP_RECEIVED = "tip_received";
+    private String myConnection;
 
 
     public MySession(Context context, SessionListeners listeners, String apiKey, String sessonId,
@@ -60,11 +67,11 @@ public class MySession extends Session {
     }
 
     // public methods
-    public void setPlayersViewContainer(ViewGroup container) {
+    public void setmSubscribersViewContainer(ViewGroup container) {
         this.mSubscribersViewContainer = container;
     }
 
-    public void setPreviewView(ViewGroup preview) {
+    public void setmPublisherViewContainer(RelativeLayout preview) {
         this.mPreview = preview;
     }
 
@@ -73,23 +80,24 @@ public class MySession extends Session {
     @Override
     protected void onConnected() {
         try {
+            mPreview = VideoPlugin.layout_publisher;
             CALL_CONNECTED = true;
-            if (CALL_QUALITY == Constants.LOW){
+            if (CALL_QUALITY == Constants.LOW) {
                 mPublisher = new Publisher(mContext,
                         "MyPublisher",
                         Publisher.CameraCaptureResolution.LOW,
                         Publisher.CameraCaptureFrameRate.FPS_7);
-            }else if(CALL_QUALITY == Constants.MEDIUM){
+            } else if (CALL_QUALITY == Constants.MEDIUM) {
                 mPublisher = new Publisher(mContext,
                         "MyPublisher",
-                        Publisher.CameraCaptureResolution.MEDIUM,
-                        Publisher.CameraCaptureFrameRate.FPS_15);
-            }else if(CALL_QUALITY == Constants.HIGH){
+                        Publisher.CameraCaptureResolution.LOW,
+                        Publisher.CameraCaptureFrameRate.FPS_7);
+            } else if (CALL_QUALITY == Constants.HIGH) {
                 mPublisher = new Publisher(mContext,
                         "MyPublisher",
-                        Publisher.CameraCaptureResolution.HIGH,
-                        Publisher.CameraCaptureFrameRate.FPS_15);
-            }else {
+                        Publisher.CameraCaptureResolution.LOW,
+                        Publisher.CameraCaptureFrameRate.FPS_7);
+            } else {
                 mPublisher = new Publisher(mContext,
                         "MyPublisher",
                         Publisher.CameraCaptureResolution.LOW,
@@ -102,7 +110,12 @@ public class MySession extends Session {
             mPublisherView = mPublisher.getView();
             mPreview.addView(mPublisher.getView(), lp);
             mPublisher.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
-        }catch (Exception e){
+
+            mPublisher.setPublishVideo(false);
+            audio_call_init = true;
+            mPublisherView.setVisibility(View.INVISIBLE);
+
+        } catch (Exception e) {
             e.printStackTrace();
             mSessionListener.onPluginError(Constants.ERROR_ON_CONNECT);
         }
@@ -118,6 +131,7 @@ public class MySession extends Session {
 
         try {
             CALL_STARTED = true;
+            myConnection = stream.getConnection().getConnectionId();
 
             mSessionListener.onCallConnected();
 
@@ -136,7 +150,7 @@ public class MySession extends Session {
 
             mSubscriberView = p.getView();
             mSubscribersViewContainer.addView(mSubscriberView);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             mSessionListener.onPluginError(Constants.ERROR_ON_SESSION_CONNECT);
         }
@@ -148,7 +162,7 @@ public class MySession extends Session {
     protected void onStreamDropped(Stream stream) {
 
         try {
-            if(CALL_STARTED)
+            if (CALL_STARTED)
                 mSessionListener.onCallEnded();
             else
                 mSessionListener.onCallRejected();
@@ -156,7 +170,7 @@ public class MySession extends Session {
             mSubscriberStream.remove(stream);
             mSubscriberConnection.remove(stream.getConnection().getConnectionId());
             mSessionListener.onStreamDrop(stream);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             mSessionListener.onPluginError(Constants.ERROR_STREAM_DROPED);
         }
@@ -164,9 +178,20 @@ public class MySession extends Session {
     }
 
     @Override
-    protected void onSignalReceived(String type, String data,
-                                    Connection connection) {
-        Log.e(TAG , "signal received");
+    protected void onSignalReceived(String type, String data, Connection connection) {
+
+
+        if (!connection.getConnectionId().equalsIgnoreCase(myConnection)) {
+            Log.e(TAG, "type is " + type + " data is " + data );
+
+            try {
+                if (type != null && type.equalsIgnoreCase(TIP_RECEIVED)) {
+                    mSessionListener.onSignalReceived(type, data, connection);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void hideVideo() {
@@ -177,7 +202,7 @@ public class MySession extends Session {
             } else {
                 mPublisherView.setVisibility(View.INVISIBLE);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             mSessionListener.onPluginError(Constants.ERROR_OCCURED);
         }
@@ -189,7 +214,7 @@ public class MySession extends Session {
             if (mPublisher != null) {
                 mPublisher.setPublishAudio(!mPublisher.getPublishAudio());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             mSessionListener.onPluginError(Constants.ERROR_OCCURED);
         }
@@ -200,32 +225,51 @@ public class MySession extends Session {
     protected void onStreamHasVideoChanged(Stream stream, int hasVideo) {
         super.onStreamHasVideoChanged(stream, hasVideo);
         try {
+            if (hasVideo == 1) {
+//                mSessionListener.videoReceived();
+                if (audio_call_init) {
+                    audio_call_init = false;
+//                    return;
+                }
+            }
+
             if (mPublisher.getStream().toString().equalsIgnoreCase(stream.toString())) {
             } else {
                 if (hasVideo == 0) {
-                    mSubscriber.setSubscribeToVideo(false);
-                    mSubscribersViewContainer.removeView(mSubscriberView);
-                    mPreview.removeView(mPublisherView);
-                    mSubscribersViewContainer.addView(mPublisherView);
+                    mSessionListener.videoEnableDisabled(false);
                 } else {
-                    mSubscriber.setSubscribeToVideo(true);
-                    if (mSubscribersViewContainer.getChildAt(mSubscribersViewContainer.getChildCount() - 1).equals(mPublisherView)) {
-                        mSubscribersViewContainer.removeView(mPublisherView);
-                    }
-                    mPreview.addView(mPublisherView);
-                    mSubscribersViewContainer.addView(mSubscriberView);
+                    Log.e(TAG, "has video");
+                    mSessionListener.videoEnableDisabled(true);
                 }
             }
-            if(mSubscriber!=null) {
-                if (mSubscriber.getSubscribeToVideo() || mPublisher.getPublishVideo()) {
-                    mSessionListener.onVideoViewChange(true);
-                } else {
-                    mSessionListener.onVideoViewChange(false);
-                }
-            }
-        }catch (Exception e){
+
+
+//            if (mPublisher.getStream().toString().equalsIgnoreCase(stream.toString())) {
+//            } else {
+//                if (hasVideo == 0) {
+//                    mSubscriber.setSubscribeToVideo(false);
+//                    mSubscribersViewContainer.removeView(mSubscriberView);
+//                    mPreview.removeView(mPublisherView);
+//                    mSubscribersViewContainer.addView(mPublisherView);
+//                } else {
+//                    mSubscriber.setSubscribeToVideo(true);
+//                    if (mSubscribersViewContainer.getChildAt(mSubscribersViewContainer.getChildCount() - 1).equals(mPublisherView)) {
+//                        mSubscribersViewContainer.removeView(mPublisherView);
+//                    }
+//                    mPreview.addView(mPublisherView);
+//                    mSubscribersViewContainer.addView(mSubscriberView);
+//                }
+//            }
+//            if(mSubscriber!=null) {
+//                if (mSubscriber.getSubscribeToVideo() || mPublisher.getPublishVideo()) {
+//                    mSessionListener.onVideoViewChange(true);
+//                } else {
+//                    mSessionListener.onVideoViewChange(false);
+//                }
+//            }
+        } catch (Exception e) {
             e.printStackTrace();
-            mSessionListener.onPluginError(Constants.ERROR_OCCURED);
+//            mSessionListener.onPluginError(Constants.ERROR_OCCURED);
         }
 
     }
@@ -252,16 +296,24 @@ public class MySession extends Session {
      * swipe Cameras
      */
     public void swipeCamera() {
-        try{
+        try {
             mPublisher.swapCamera();
-        }catch (Exception e ){
+        } catch (Exception e) {
             e.printStackTrace();
             mSessionListener.onPluginError(Constants.ERROR_OCCURED);
         }
     }
 
-    public Subscriber getSubscriber()
-    {
+    /**
+     * enables video
+     */
+    public void showVideo() {
+        mPublisherView.setVisibility(View.VISIBLE);
+        mPublisher.setPublishVideo(true);
+        audio_call_init = false;
+    }
+
+    public Subscriber getSubscriber() {
         return mSubscriber;
     }
 
@@ -274,7 +326,7 @@ public class MySession extends Session {
     @Override
     protected void onConnectionCreated(Connection connection) {
         super.onConnectionCreated(connection);
-        if(!mCaller)
+        if (!mCaller)
             mSessionListener.onReciverInitialized();
     }
 
@@ -291,7 +343,7 @@ public class MySession extends Session {
     @Override
     protected void onDisconnected() {
         super.onDisconnected();
-        if(!CALL_STARTED)
+        if (!CALL_STARTED)
             mSessionListener.onCallEndBeforeConnect();
         else
             mSessionListener.onCallDisconnected();
@@ -300,6 +352,7 @@ public class MySession extends Session {
     @Override
     protected void onError(OpentokError error) {
         super.onError(error);
+        Log.e(TAG, error.getMessage());
         mSessionListener.onError(error);
     }
 

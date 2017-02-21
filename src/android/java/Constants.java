@@ -3,6 +3,7 @@ package com.evontech.VideoPlugin;
 public class Constants {
 
     public static final String INIT_COMPLETE = "Initialization completed !!";
+    public static final String MESSAGE_SEND = "Message send";
     public static final String CALL_STARTED = "CallStarted";
     public static final String DISCONNECT_SUCCESS = "Successfully disconnected !!";
     public static final String CALL_END = "CallEnded";
@@ -48,10 +49,11 @@ public class Constants {
     public static final int HIGH = 3;
 
 
-
     public static String ERROR_OCCURED = "an error occured";
     public static String ERROR_ON_CONNECT = "error while connecting";
     public static String ERROR_ON_SESSION_CONNECT = "error on session connect";
+    public static String ERROR_ON_SIGNAL_SEND = "error on signal send";
+    public static String ERROR_ON_SIGNAL_RECEIVE = "error on signal receive";
     public static String ERROR_STREAM_DROPED = "stream dropped";
 
 }

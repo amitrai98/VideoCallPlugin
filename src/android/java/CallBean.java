@@ -38,6 +38,9 @@ public class CallBean {
     @Expose
     private String isReceiverInit;
 
+    @SerializedName("proCharge")
+    @Expose
+    private String proCharge;
     /**
      * 
      * @return
@@ -218,4 +221,11 @@ public class CallBean {
         this.isReceiverInit = isReceiverInit;
     }
 
+    public String getProCharge() {
+        return proCharge;
+    }
+
+    public void setProCharge(String proCharge) {
+        this.proCharge = proCharge;
+    }
 }

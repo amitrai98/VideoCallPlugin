@@ -1,5 +1,6 @@
 package com.evontech.VideoPlugin;
 
+import com.opentok.android.Connection;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Stream;
 
@@ -22,5 +23,8 @@ public interface SessionListeners {
     void onCallEndByReceiver();
     void onError(OpentokError error);
     void onPluginError(String error_message);
+    void videoReceived();
+    void videoEnableDisabled(boolean hasVideo);
+    void onSignalReceived(String type, String data, Connection connection);
 
 }
